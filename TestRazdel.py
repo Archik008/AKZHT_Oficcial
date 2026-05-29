@@ -1711,8 +1711,8 @@ class interface_manager:
         self.switch_manager = None
         self.route_manager = None
         self.signal_manager = None
-        self.drawDeadEnd("before_M10", "right", 0)
-        self.drawDeadEnd("before_M6", "right", 0)
+        # self.drawDeadEnd("before_M10", "right", 0)
+        # self.drawDeadEnd("before_M6", "right", 0)
         self.drawDeadEnd("Mb_depo", "right", 0)
         # self.drawDeadEnd("past2", "right", 0)
         # self.drawDeadEnd("past4", "right", 0)
