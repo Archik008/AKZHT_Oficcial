@@ -1760,10 +1760,7 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = ["pastM1", "beforeM6", "past2", "1STR", "past4", "M6H2", "M2H1_mid",
-                       "M8mid", "M2H1_third", "ALB_Sect1-2", "ALB_Sect1", "ALB_Sect2",
-                       "ALB_Sect0", "ALB_Sect1-2_2", "before_M10", "before_M6", "H4_ch4",
-                       "before_M5", "before_M7", "before_M9"]
+        bannedNames = []
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
