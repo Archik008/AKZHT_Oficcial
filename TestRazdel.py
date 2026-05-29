@@ -2375,14 +2375,7 @@ if DRAW_TRACKS:
         x1, y1 = positions[a]
         x2, y2 = positions[b]
         a_and_b = (a,b)
-        BlockSegments = [("M1","M8mid")]
-        BlockSeg2 = [("Ч", "M2")]
-        if a_and_b in BlockSegments:
-            seg = canvas.create_line(x1, y1, x2-5, y2, width=6, fill=interface_manager.line_color_main)
-        elif a_and_b in BlockSeg2:
-            seg = canvas.create_line(x1 -1, y1, x2 -13, y2, width=6, fill=interface_manager.line_color_main)
-        else:
-            seg = canvas.create_line(x1 - 5, y1, x2 + 5, y2, width=6, fill=interface_manager.line_color_main)
+        seg = canvas.create_line(x1 - 5, y1, x2 + 5, y2, width=6, fill=interface_manager.line_color_main)
         segment_ids[(a, b)] = seg
         segment_ids[(b, a)] = seg
 

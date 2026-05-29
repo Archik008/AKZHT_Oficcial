@@ -58,26 +58,13 @@ positions = {
     # "ALB_Sect1-2_2":(250,500)
 }
 segments = [
-    ("M1", "M8mid"),
-    ("pastM1", "M1"),
-    ("M8mid", "M8"),
-    ("M8", "H1"),
-    ("past2", "H2"),
-    ("H2", "M6H2"),
-    ("M6H2", "M6"),
-    ("Ч", "M2"),
-    ("M2", "M2H1_mid"),
-    ("M2H1_mid", "M2H1_third"),
-    ("H1", "M2H1_third"),
     ("M10", "H3"),
-    ("past4", "H4"),
-    ("M6", "beforeM6"),
-    ("ALB_Sect2", "ALB_Sect0"),
-    ("ALB_Sect1", "ALB_Sect1-2"),
-    ("ALB_Sect1-2", "ALB_Sect2"),
+    ("M8", "H1"),
+    ("H2", "Ч2"),
+    ("H4", "H4_ch4")
 ]
 
-DRAW_TRACKS = False
+DRAW_TRACKS = True
 
 
 SEGMENT_ORDER = [
