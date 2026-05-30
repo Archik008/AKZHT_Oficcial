@@ -2397,15 +2397,14 @@ if DRAW_TRACKS:
         x2, y2 = positions[b]
         a_and_b = (a,b)
         seg = None
-        if a == "M6" and b == "H4":
-            seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)
-        else:
+        if (a == "M6" and b == "Turn_14_J") or (a == "Turn_14_J" and b == 'H2'):
             seg = canvas.create_line(x1, y1, x2, y2, width=6, fill=interface_manager.line_color_main)
-        segment_ids[(a, b)] = seg
+        else:
+            seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)   
         segment_ids[(b, a)] = seg
 
 
-AddDiagonal(255, 295, 190, 255, -10, -10, "Turn_14")
+AddDiagonal(230, 300, 190, 255, -20, -20, "Turn_14")
 AddDiagonal(230,135,290,85, 10, 10, "turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
