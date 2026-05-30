@@ -2222,11 +2222,7 @@ seg_occ_train = {
     ("ALB_Sect1", "ALB_Sect1-2"): 1,
 }
 diag_occ_train = {
-    "ALB_Turn1": 1,
-    "ALB_Turn2": 1,
-    "ALB_Turn8": 1,
-    "ALB_Turn4": 1,
-    "ALB_Turn6": 1,
+    "Turn_16": 1,
 }
 
 for block, segs in segment_groups.items():
@@ -2378,11 +2374,11 @@ if DRAW_TRACKS:
         x1, y1 = positions[a]
         x2, y2 = positions[b]
         a_and_b = (a,b)
-        seg = canvas.create_line(x1 - 5, y1, x2 + 5, y2, width=6, fill=interface_manager.line_color_main)
+        seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)
         segment_ids[(a, b)] = seg
         segment_ids[(b, a)] = seg
 
-
+AddDiagonal(230,135,290,85, 10, 10, "turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
