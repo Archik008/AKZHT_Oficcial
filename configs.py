@@ -1,5 +1,4 @@
 positions = {
-    
     "before_M6": (100, 250),
     "M6": (150, 250),
     "Ч4": (400, 300),
@@ -26,7 +25,8 @@ positions = {
     "H": (750, 190),
     "1":(880, 190),
     "3":(990, 190),
-    "Mb_depo":(790, 140)
+    "Mb_depo":(790, 140),
+    "Turn_14_J": (190, 250),
     # "M3": (, 230),
     # "M1": (),
     # "H5": ()
@@ -83,7 +83,8 @@ segments = [
 
     # 2 line
     ("before_M6", "M6"),
-    ("M6", "H2"),
+    ("M6", "Turn_14_J"),
+    ("Turn_14_J", "H2"),
     ("H2", "Ч2"),
     ("Ч2", "M5"),
     ("M5", "M3"), 
@@ -148,14 +149,33 @@ split_parts_map = {
         "partB": "ALB_Turn4"
     }
 }
-switch_list = ["ALB_Turn1", "ALB_Turn2", "ALB_Turn8", "ALB_Turn4-6"]
+switch_list = ["ALB_Turn1", "ALB_Turn2", "ALB_Turn8", "ALB_Turn4-6", "Turn_14"]
 
 default_switch_mode = {
     "ALB_Turn1": "left",
     "ALB_Turn2": "left",
     "ALB_Turn8":  "left",
     "ALB_Turn4-6":  "left",
+    "Turn_14": "left",
 }
+
+# Толщина прямых сегментов при положении стрелки: left = «+», right = «-»
+TRACK_WIDTH_MAIN = 6
+TRACK_WIDTH_THIN = 2
+
+switch_segment_width = {
+    "Turn_14": {
+        "left": {
+            ("M6", "Turn_14_J"): 6,
+            ("Turn_14_J", "H2"): 6,
+        },
+        "right": {
+            ("M6", "Turn_14_J"): 6,      # ход на стрелку / в H4 — толстый
+            ("Turn_14_J", "H2"): 2,      # отворот к H2 — тонкий (не по маршруту)
+        },
+    },
+}
+
 segment_to_signal = {
     ('M8', 'M8mid'): "M8",
     ('M1', 'M8mid'): "M8",
@@ -204,7 +224,12 @@ diagonal_config = {
         "left":  {"exists": True, "connected": +5, "disconnected": 0},
         "right": {"exists": True, "connected": +5, "disconnected": 0},
         "default": "both"
-    }
+    },
+    "Turn_14": {
+        "left":  {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": 0, "disconnected": 0},
+        "default": "both",
+    },
 }
 
 signals_config_simple = {
@@ -658,13 +683,13 @@ routes = {
         {"type": "segment", "id": ("M2H1_mid", "M2H1_third")},
         {"type": "segment", "id": ("M2", "M2H1_mid")},
     ],
-    ("M6", "H4"):[
-        {"type": "segment", "id": ("M6H2", "M6")},
-        {"type": "diag", "name": "ALB_Turn8"},
+    ("M6", "H4"): [
+        {"type": "segment", "id": ("M6", "Turn_14_J")},
+        {"type": "diag", "name": "Turn_14"},
     ],
-    ("M6", "H2"):[
-        {"type": "segment", "id": ("M6H2", "M6")},
-        {"type": "segment", "id": ("M6H2", "H2")},
+    ("M6", "H2"): [
+        {"type": "segment", "id": ("M6", "Turn_14_J")},
+        {"type": "segment", "id": ("Turn_14_J", "H2")},
     ],
     ("M6", "4"): [
         {"type": "segment", "id": ("M6H2", "M6")},
@@ -813,8 +838,8 @@ train_routes = {
 
 }
 route_switch_modes = {
-    ("H2", "M6"): {"ALB_Turn8":  "left","ALB_Turn4-6":  "left"},
-    ("H4", "M6"): {"ALB_Turn8":  "right","ALB_Turn4-6":  "left"},
+    ("M6", "H2"): {"Turn_14": "left"},   # «+»
+    ("M6", "H4"): {"Turn_14": "right"},  # «-»
     ("M2", "H3"): {"ALB_Turn2": "right"},
     ("M2", "M10"): {"ALB_Turn2": "right"},
     ("H3", "M1"): {"ALB_Turn1": "right"},

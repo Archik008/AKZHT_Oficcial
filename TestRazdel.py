@@ -1102,6 +1102,9 @@ class RouteManager:
         ("M10", "H3"): 0,
         ("past4", "H4"): 0,
         ("M6", "beforeM6"): 0,
+        ("M6", "H2"): 0,
+        ("M6", "Turn_14_J"): 0,
+        ("Turn_14_J", "H2"): 0,
     }
     diag_active_counter = {
         'ALB_Turn2': 0,
@@ -1109,6 +1112,7 @@ class RouteManager:
         'ALB_Turn8': 0,
         'ALB_Turn4': 0,
         'ALB_Turn6': 0,
+        "Turn_14": 0,
     }
 
     def __init__(self):
@@ -1605,10 +1609,8 @@ class SwitchManager:
 
     def initialize_switches(self):
         ...
-        # self.set_diagonal_mode("ALB_Turn1", "left")
-        # self.set_diagonal_mode("ALB_Turn2", "left")
-        # self.set_diagonal_mode("ALB_Turn8", "left")
-        # self.set_diagonal_mode("ALB_Turn4-6", "left")
+        # for name in switch_list:
+        #     self.set_diagonal_mode(name, default_switch_mode.get(name, "left"))
 
     def on_switch_mode_selected(self, name, mode):
         text = canvas.itemcget(switch_text_ids[name], "text")
@@ -1763,7 +1765,7 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = ["before_M6", "before_M10", "1_AK"]
+        bannedNames = ["before_M6", "before_M10", "1_AK", "Turn_14_J"]
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
@@ -1882,6 +1884,18 @@ class interface_manager:
             for lines in range(len(diag_ids[(namediag)])):
                 canvas.itemconfig(diag_ids[namediag][lines], width=width)
 
+    def apply_switch_segment_widths(self, name_diag, mode):
+        mode_map = switch_segment_width.get(name_diag, {}).get(mode)
+        if not mode_map:
+            return
+        for seg_key, width in mode_map.items():
+            a, b = seg_key
+            seg_id = segment_ids.get((a, b))
+            if seg_id is None:
+                seg_id = segment_ids.get((b, a))
+            if seg_id is not None:
+                canvas.itemconfig(seg_id, width=width)
+
     def apply_diagonal_mode(self, nameDiag, mode):
         cfg = diagonal_config.get(nameDiag)
         if cfg is None:
@@ -1928,6 +1942,8 @@ class interface_manager:
 
                 if nameDiag == "ALB_Turn1":
                     canvas.itemconfig(segment_ids[("M8mid", "M8")], width=6)
+
+        self.apply_switch_segment_widths(nameDiag, mode)
 
     def on_switch_click(self, event):
         name = get_switch_name_from_event(event)
@@ -2227,6 +2243,7 @@ diag_occ_train = {
     "ALB_Turn8": 1,
     "ALB_Turn4": 1,
     "ALB_Turn6": 1,
+    "Turn_14": 1,   
 }
 
 for block, segs in segment_groups.items():
@@ -2378,11 +2395,16 @@ if DRAW_TRACKS:
         x1, y1 = positions[a]
         x2, y2 = positions[b]
         a_and_b = (a,b)
-        seg = canvas.create_line(x1 - 5, y1, x2 + 5, y2, width=6, fill=interface_manager.line_color_main)
+        seg = None
+        if a == "M6" and b == "H4":
+            seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)
+        else:
+            seg = canvas.create_line(x1, y1, x2, y2, width=6, fill=interface_manager.line_color_main)
         segment_ids[(a, b)] = seg
         segment_ids[(b, a)] = seg
 
 
+AddDiagonal(255, 295, 190, 255, -10, -10, "Turn_14")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
