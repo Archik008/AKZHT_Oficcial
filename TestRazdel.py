@@ -2238,6 +2238,7 @@ seg_occ_train = {
     ("ALB_Sect1", "ALB_Sect1-2"): 1,
 }
 diag_occ_train = {
+    "Turn_16": 1,
     "ALB_Turn1": 1,
     "ALB_Turn2": 1,
     "ALB_Turn8": 1,
@@ -2405,6 +2406,7 @@ if DRAW_TRACKS:
 
 
 AddDiagonal(255, 295, 190, 255, -10, -10, "Turn_14")
+AddDiagonal(230,135,290,85, 10, 10, "turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")

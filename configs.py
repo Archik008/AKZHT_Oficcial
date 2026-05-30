@@ -149,13 +149,14 @@ split_parts_map = {
         "partB": "ALB_Turn4"
     }
 }
-switch_list = ["ALB_Turn1", "ALB_Turn2", "ALB_Turn8", "ALB_Turn4-6", "Turn_14"]
+switch_list = ["ALB_Turn1", "ALB_Turn2", "ALB_Turn8", "ALB_Turn4-6", "Turn_14", "Turn_16"]
 
 default_switch_mode = {
     "ALB_Turn1": "left",
     "ALB_Turn2": "left",
     "ALB_Turn8":  "left",
     "ALB_Turn4-6":  "left",
+    "Turn_16": "left",
     "Turn_14": "left",
 }
 
