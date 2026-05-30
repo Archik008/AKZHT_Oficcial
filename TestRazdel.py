@@ -1714,6 +1714,9 @@ class interface_manager:
         # self.drawDeadEnd("before_M10", "right", 0)
         # self.drawDeadEnd("before_M6", "right", 0)
         self.drawDeadEnd("Mb_depo", "right", 0)
+        self.drawDeadEnd("before_M6", "right", 0)
+        self.drawDeadEnd("1_AK", "right", 0)
+        self.drawDeadEnd("before_M10", "right", 0)
         # self.drawDeadEnd("past2", "right", 0)
         # self.drawDeadEnd("past4", "right", 0)
         # self.drawDeadEnd("beforeM6", "left", 0)
@@ -1760,7 +1763,7 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = []
+        bannedNames = ["before_M6", "before_M10", "1_AK"]
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
