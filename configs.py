@@ -1,6 +1,6 @@
 positions = {
-    "before_M6": (100, 250),
-    "M6": (150, 250),
+    "before_M6": (80, 250),
+    "M6": (120, 250),
     "Ч4": (400, 300),
     "Ч2": (420, 250),
     "H4": (250, 300),
@@ -27,6 +27,8 @@ positions = {
     "3":(990, 190),
     "Mb_depo":(790, 140),
     "Turn_14_J": (190, 250),
+    "Turn_6_A": (160, 250),
+    "Turn_8_B": (200, 190),
     # "M3": (, 230),
     # "M1": (),
     # "H5": ()
@@ -149,7 +151,7 @@ split_parts_map = {
         "partB": "ALB_Turn4"
     }
 }
-switch_list = ["Turn_14", "Turn_16"]
+switch_list = ["Turn_14", "Turn_16", "AK_Turn6-8"]
 
 base_switch_diags = {
     "Turn_14": (230, 300, 190, 255)
@@ -162,6 +164,7 @@ default_switch_mode = {
     "ALB_Turn4-6":  "left",
     "Turn_16": "left",
     "Turn_14": "left",
+    "AK_Turn6-8": "left"
 }
 
 # Толщина прямых сегментов при положении стрелки: left = «+», right = «-»
@@ -187,6 +190,22 @@ switch_branch_aspects = {
             "diag_state": "connected",
         },
     },
+    "AK_Turn6-8": {
+        "left": {
+            "segments": {
+                ("Turn_8_B", "M8"): "connected",
+                ("Turn_6_A", "M6"): "disconnected",
+            },
+            "diag_state": "disconnected",
+        },
+         "right": {
+            "segments": {
+                ("Turn_8_B", "M8"): "disconnected",
+                ("Turn_6_A", "M6"): "connected",
+            },
+            "diag_state": "connected",
+        },
+    }
 }
 
 switch_segment_width = {
@@ -259,6 +278,11 @@ diagonal_config = {
     "Turn_16":{
         "left":  {"exists": True, "connected": 0, "disconnected": 0},
         "right": {"exists": True, "connected": 0, "disconnected": 0},
+        "default": "both",
+    },
+    "AK_Turn6-8": {
+        "left":  {"exists": True, "connected": +7, "disconnected": 0},
+        "right": {"exists": True, "connected": +7, "disconnected": 0},
         "default": "both",
     }
 }
@@ -798,6 +822,11 @@ routes = {
     ("H3", "M2"): [
         {"type": "diag", "name": "ALB_Turn2"},
         {"type": "segment", "id": ("M2", "M2H1_mid")},
+    ],
+
+    ("M6", "M8"): [
+        {"type": "diag", "name": "AK_Turn6-8"},
+        {"type": "segment", "id": ("")}
     ]
 }
 

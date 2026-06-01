@@ -1767,7 +1767,8 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = ["before_M6", "before_M10", "1_AK", "Turn_14_J"]
+        bannedNames = ["before_M6", "before_M10", "1_AK", "Turn_14_J", 
+                       "Turn_6_A", "Turn_8_B"]
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
@@ -2418,9 +2419,10 @@ def AddDiagonal(x1, y1, x2, y2, offsetleft, offsetright, nameDiag):
     l3 = canvas.create_line(x1, y1, x2, y2, width=3, fill=interface_manager.line_color_main)
     diag_ids[(nameDiag)] = [l1, l2, l3]
 
-def AddSplitDiagonal(x1, y1, x2, y2,
-                     x3, y3,offset_left,
+def AddSplitDiagonalDasAuto(x1, y1, x3, y3,offset_left,
                      offset_right, nameDiag, namePart1, namePart2):
+    x2 = (x1 + x3) / 2
+    y2 = (y1 + y3) / 2
     l2 = canvas.create_line(x1, y1, x2, y2, width=3, fill=interface_manager.line_color_main)
     l3 = canvas.create_line(x2, y2, x3, y3, width=3, fill=interface_manager.line_color_main)
     l1 = canvas.create_line(x1, y1, x1 - offset_left, y1, width=3, fill=interface_manager.line_color_main)
@@ -2451,6 +2453,7 @@ AddDiagonal(230,135,290,85, 10, 10, "Turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
+AddSplitDiagonalDasAuto(160, 250, 200, 190, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
 # AddSplitDiagonal(430, 228, 390, 280,350, 331.5, -30, -30, "ALB_Turn4-6", "ALB_Turn4", "ALB_Turn6")
 
 def get_switch_name_from_event(event):
