@@ -235,6 +235,11 @@ diagonal_config = {
         "right": {"exists": True, "connected": -7, "disconnected": +7},
         "default": "both",
     },
+    "Turn_16":{
+        "left":  {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": 0, "disconnected": 0},
+        "default": "both",
+    }
 }
 
 signals_config_simple = {
@@ -754,11 +759,15 @@ routes = {
         {"type": "segment", "id": ("M8mid", "M8")},
         {"type": "segment", "id": ("M8", "H1")},
     ],
-    ("M1", "M10"): [
-        {"type": "segment", "id": ("M8mid", "M1")},
-        {"type": "segment", "id": ("M8mid", "M8")},
-        {"type": "diag", "name": "ALB_Turn1"},
+    ("M10", "H5"): [
+        {"type": "segment", "id": ("M10", "H5")},
+        {"type": "diag", "name": "Turn_16"},
     ],
+
+    ("M10", "H3"): [
+        {"type": "segment", "id": ("M10", "H3")},
+    ],
+
     ("H3", "M2"): [
         {"type": "diag", "name": "ALB_Turn2"},
         {"type": "segment", "id": ("M2", "M2H1_mid")},
@@ -873,6 +882,8 @@ route_switch_modes = {
     ("H1", "Ч"): {"ALB_Turn2": "left", "ALB_Turn4-6": "left"},
     ("H2", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left",},
     ("H4", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left", "ALB_Turn8": "right"},
+    ("M10", "H5"):{"Turn_16":"right"},
+    ("M10", "H3"):{"Turn_16": "left"}
 
 }
 
