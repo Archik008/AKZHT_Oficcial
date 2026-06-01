@@ -1106,6 +1106,7 @@ class RouteManager:
         ("M6", "H2"): 0,
         ("M6", "Turn_14_J"): 0,
         ("Turn_14_J", "H2"): 0,
+        ("M10", "H5"): 0,
     }
     diag_active_counter = {
         'ALB_Turn2': 0,
@@ -1897,6 +1898,44 @@ class interface_manager:
             if seg_id is not None:
                 canvas.itemconfig(seg_id, width=width)
 
+    @staticmethod
+    def aspect_to_track_width(aspect: str) -> int:
+        """connected → 6 px, disconnected → 2 px."""
+        if aspect == "connected":
+            return TRACK_WIDTH_MAIN
+        if aspect == "disconnected":
+            return TRACK_WIDTH_THIN
+        raise ValueError(f"Ожидается 'connected' или 'disconnected', получено: {aspect!r}")
+
+    def _set_segment_aspect(self, segment_key: tuple, segment_state: str):
+        seg_w = self.aspect_to_track_width(segment_state)
+        a, b = segment_key
+        seg_id = segment_ids.get((a, b))
+        if seg_id is None:
+            seg_id = segment_ids.get((b, a))
+        if seg_id is not None:
+            canvas.itemconfig(seg_id, width=seg_w)
+        return seg_w
+
+    def apply_switch_branch_aspects(self, name_diag: str, mode: str) -> bool:
+        """
+        Универсально: толщина сегментов и диагонали из switch_branch_aspects.
+        segments: {("A","B"): "connected"|"disconnected", ...}
+        diag_state: "connected" (6 px) | "disconnected" (2 px)
+        Возвращает True, если конфиг для стрелки найден.
+        """
+        cfg = switch_branch_aspects.get(name_diag, {}).get(mode)
+        if not cfg:
+            return False
+        for seg_key, seg_state in cfg.get("segments", {}).items():
+            self._set_segment_aspect(seg_key, seg_state)
+        diag_state = cfg.get("diag_state")
+        if diag_state is not None and name_diag in diag_ids:
+            diag_w = self.aspect_to_track_width(diag_state)
+            for line_id in diag_ids[name_diag]:
+                canvas.itemconfig(line_id, width=diag_w)
+        return True
+
     def apply_diagonal_mode(self, nameDiag, mode):
         cfg = diagonal_config.get(nameDiag)
         if cfg is None:
@@ -1944,7 +1983,8 @@ class interface_manager:
                 if nameDiag == "ALB_Turn1":
                     canvas.itemconfig(segment_ids[("M8mid", "M8")], width=6)
 
-        self.apply_switch_segment_widths(nameDiag, mode)
+        if not self.apply_switch_branch_aspects(nameDiag, mode):
+            self.apply_switch_segment_widths(nameDiag, mode)
 
     def on_switch_click(self, event):
         name = get_switch_name_from_event(event)
@@ -2401,11 +2441,12 @@ if DRAW_TRACKS:
         if (a == "M6" and b == "Turn_14_J") or (a == "Turn_14_J" and b == 'H2'):
             seg = canvas.create_line(x1, y1, x2, y2, width=6, fill=interface_manager.line_color_main)
         else:
-            seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)   
+            seg = canvas.create_line(x1, y1, x2 - 7, y2, width=6, fill=interface_manager.line_color_main)
+        segment_ids[(a, b)] = seg
         segment_ids[(b, a)] = seg
 
 
-AddDiagonal(190, 247.5, 230, 300, 20, 20, "Turn_14")
+AddDiagonal(190, 247.5, 220, 300, 20, 20, "Turn_14")
 AddDiagonal(230,135,290,85, 10, 10, "Turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")

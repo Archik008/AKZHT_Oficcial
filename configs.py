@@ -168,6 +168,27 @@ default_switch_mode = {
 TRACK_WIDTH_MAIN = 6
 TRACK_WIDTH_THIN = 2
 
+# connected = рабочий путь (6 px), disconnected = отведённый (2 px)
+# Ключ — имя стрелки; для каждого left/right: segments + diag_state
+switch_branch_aspects = {
+    "Turn_16": {
+        "left": {
+            "segments": {
+                ("M10", "H3"): "connected",
+                ("M10", "H5"): "disconnected",
+            },
+            "diag_state": "disconnected",
+        },
+        "right": {
+            "segments": {
+                ("M10", "H3"): "disconnected",
+                ("M10", "H5"): "connected",
+            },
+            "diag_state": "connected",
+        },
+    },
+}
+
 switch_segment_width = {
     "Turn_14": {
         "left": {
@@ -887,7 +908,6 @@ route_switch_modes = {
     ("H4", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left", "ALB_Turn8": "right"},
     ("M10", "H5"):{"Turn_16":"right"},
     ("M10", "H3"):{"Turn_16": "left"}
-
 }
 
 #Arduino Configs
