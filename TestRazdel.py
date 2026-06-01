@@ -1113,6 +1113,7 @@ class RouteManager:
         'ALB_Turn4': 0,
         'ALB_Turn6': 0,
         "Turn_14": 0,
+        'Turn_16': 0,
     }
 
     def __init__(self):
@@ -2404,7 +2405,7 @@ if DRAW_TRACKS:
 
 
 AddDiagonal(190, 247.5, 230, 300, 20, 20, "Turn_14")
-AddDiagonal(230,135,290,85, 10, 10, "turn_16")
+AddDiagonal(230,135,290,85, 10, 10, "Turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
