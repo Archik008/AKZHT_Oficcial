@@ -445,6 +445,7 @@ class SignalManager():
             key = (a, b)
             cfg = ROUTE_SIGNAL_MAP.get(key)
             for name in cfg:
+                print("Name", name)
                 if name[0] == "H":
                     self.calculate_train_signal(name)
                 elif name == "Ч":
@@ -1585,7 +1586,7 @@ class RouteManager:
                 self.minus_from_counter_diag(step["name"])
         # recalc_signals_to_red(route_id)
         #SignalManage.recalc_signals_to_red(route_id)
-        SignalManage.return_to_red_after_finishing(route_id)
+        # SignalManage.return_to_red_after_finishing(route_id)
         start_signal = data.get("start")
         if SignalManage.active_signal_routes.get(start_signal) == route_id:
             del SignalManage.active_signal_routes[start_signal]
@@ -2051,7 +2052,7 @@ class interface_manager:
             current_values = list(combobox1["values"])
             current_values.append(rid)
             combobox1["values"] = tuple(current_values)
-            SignalManage.set_signals_to_route(rid)
+            # SignalManage.set_signals_to_route(rid)
             #SignalManage.recalc_signals_from_active_routes((a, b))
 
         root.after(2100, finalize)

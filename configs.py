@@ -554,7 +554,13 @@ ROUTE_SIGNAL_MAP: dict[tuple[str, str], dict[str, dict[str, object]]] = {
         "H4": {"lamps": {"green": {"on": True, "blink": False}, "yellow": {"on": True, "blink": False}, }, },
     },
 
-
+    ("M10", "H5"): {
+        "M10": {"lamps": {"white": {"on": True, "blink": False}}},
+        "H5": {"lamps": {
+            "green": {"on": True, "blink": False},
+            "yellow": {"on": True, "blink": False},
+        }},
+    },
 }
 
 routes_dir = {
@@ -847,9 +853,6 @@ train_routes = {
         {"type": "segment", "id": ("M2", "M2H1_mid")},
         {"type": "segment", "id": ("Ч", "M2")},
     ],
-
-
-
 }
 route_switch_modes = {
     ("M6", "H2"): {"Turn_14": "left"},   # «+»
