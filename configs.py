@@ -15,6 +15,7 @@ positions = {
     "Ч1": (440, 190),
     "Ч3": (420, 140),
     "Ч5": (420, 80),
+    "Turn_17_J":(470,140),
     "M7": (520, 140),
     "M9": (670, 140),
     "M5": (520, 250),
@@ -151,7 +152,8 @@ split_parts_map = {
         "partB": "ALB_Turn4"
     }
 }
-switch_list = ["Turn_14", "Turn_16", "AK_Turn6-8"]
+
+switch_list = ["Turn_14", "Turn_16", "Turn_17",  "AK_Turn6-8"]
 
 base_switch_diags = {
     "Turn_14": (230, 300, 190, 255)
@@ -164,7 +166,8 @@ default_switch_mode = {
     "ALB_Turn4-6":  "left",
     "Turn_16": "left",
     "Turn_14": "left",
-    "AK_Turn6-8": "left"
+    "AK_Turn6-8": "left",
+    "Turn_17": "left",
 }
 
 # Толщина прямых сегментов при положении стрелки: left = «+», right = «-»
@@ -205,7 +208,21 @@ switch_branch_aspects = {
             },
             "diag_state": "connected",
         },
-    }
+    },
+    "Turn_17": {
+        "left": {
+            "segments": {
+                ("Ч5", "M7"): "connected",
+            },
+            "diag_state": "disconnected",
+        },
+        "right": {
+            "segments": {
+                ("Ч5", "M7"): "disconnected",
+            },
+            "diag_state": "connected",
+        },
+    },
 }
 
 switch_segment_width = {
@@ -283,6 +300,10 @@ diagonal_config = {
     "AK_Turn6-8": {
         "left":  {"exists": True, "connected": +7, "disconnected": 0},
         "right": {"exists": True, "connected": +7, "disconnected": 0},
+    },
+    "Turn_17":{
+        "left":  {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": 0, "disconnected": 0},
         "default": "both",
     }
 }
@@ -827,6 +848,10 @@ routes = {
     ("M6", "M8"): [
         {"type": "diag", "name": "AK_Turn6-8"},
         {"type": "segment", "id": ("")}
+    ],
+    ("Ч5", "M7"):[
+        {"type": "diag", "name": "Turn_17"},
+        {"type": "segment", "id": ("Ч5", "M7")},
     ]
 }
 
@@ -936,7 +961,8 @@ route_switch_modes = {
     ("H2", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left",},
     ("H4", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left", "ALB_Turn8": "right"},
     ("M10", "H5"):{"Turn_16":"right"},
-    ("M10", "H3"):{"Turn_16": "left"}
+    ("M10", "H3"):{"Turn_16": "left"},
+    ("Ч5", "M7"):{"Turn_17":"left"}
 }
 
 #Arduino Configs

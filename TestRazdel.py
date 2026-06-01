@@ -1116,6 +1116,7 @@ class RouteManager:
         'ALB_Turn6': 0,
         "Turn_14": 0,
         'Turn_16': 0,
+        "Turn_17":0,
     }
 
     def __init__(self):
@@ -1768,7 +1769,7 @@ class interface_manager:
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
         bannedNames = ["before_M6", "before_M10", "1_AK", "Turn_14_J", 
-                       "Turn_6_A", "Turn_8_B"]
+                       "Turn_6_A", "Turn_8_B", "Turn_17_J"]
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
@@ -2281,12 +2282,8 @@ seg_occ_train = {
 }
 diag_occ_train = {
     "Turn_16": 1,
-    "ALB_Turn1": 1,
-    "ALB_Turn2": 1,
-    "ALB_Turn8": 1,
-    "ALB_Turn4": 1,
-    "ALB_Turn6": 1,
-    "Turn_14": 1,   
+    "Turn_14": 1,
+    "Turn_17": 1,
 }
 
 for block, segs in segment_groups.items():
@@ -2449,7 +2446,8 @@ if DRAW_TRACKS:
 
 
 AddDiagonal(190, 247.5, 220, 300, 20, 20, "Turn_14")
-AddDiagonal(230,135,290,85, 10, 10, "Turn_16")
+AddDiagonal(220,135,270,80, 10, 10, "Turn_16")
+AddDiagonal(430, 80, 470, 135, 10, 10, "Turn_17")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
