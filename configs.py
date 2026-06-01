@@ -149,7 +149,11 @@ split_parts_map = {
         "partB": "ALB_Turn4"
     }
 }
-switch_list = ["ALB_Turn1", "ALB_Turn2", "ALB_Turn8", "ALB_Turn4-6", "Turn_14", "Turn_16"]
+switch_list = ["Turn_14", "Turn_16"]
+
+base_switch_diags = {
+    "Turn_14": (230, 300, 190, 255)
+}
 
 default_switch_mode = {
     "ALB_Turn1": "left",
@@ -228,7 +232,7 @@ diagonal_config = {
     },
     "Turn_14": {
         "left":  {"exists": True, "connected": 0, "disconnected": 0},
-        "right": {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": -7, "disconnected": +7},
         "default": "both",
     },
 }

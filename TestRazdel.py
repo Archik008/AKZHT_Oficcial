@@ -1608,9 +1608,8 @@ class SwitchManager:
 
 
     def initialize_switches(self):
-        ...
-        # for name in switch_list:
-        #     self.set_diagonal_mode(name, default_switch_mode.get(name, "left"))
+        for name in switch_list:
+            self.set_diagonal_mode(name, default_switch_mode.get(name, "left"))
 
     def on_switch_mode_selected(self, name, mode):
         text = canvas.itemcget(switch_text_ids[name], "text")
@@ -1839,7 +1838,7 @@ class interface_manager:
 
     def setBranchRight(self, nameDiag, offset):
         if nameDiag in split_diag_ids.keys():
-            x1, y1, x2, y2 = canvas.coords(split_diag_ids[nameDiag]['partA'][0])
+            x1, y1, x2, y2 = canvas.coords(split_diag_ids[nameDiag]['partA'][0]) 
             canvas.coords(split_diag_ids[nameDiag]['partA'][0], x1, y1 - offset, x2, y2 - offset)
 
             x1, y1, x2, y2 = canvas.coords(split_diag_ids[nameDiag]['partA'][1])
@@ -2404,7 +2403,7 @@ if DRAW_TRACKS:
         segment_ids[(b, a)] = seg
 
 
-AddDiagonal(230, 300, 190, 255, -20, -20, "Turn_14")
+AddDiagonal(190, 247.5, 230, 300, 20, 20, "Turn_14")
 AddDiagonal(230,135,290,85, 10, 10, "turn_16")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
