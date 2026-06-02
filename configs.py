@@ -76,9 +76,12 @@ segments = [
     # 5 line
     ("H5", "Ч5"),
 
-
+    ("M6", "Turn_6_A"),
+    ("Turn_8_B", "M8"),
+    ("Turn_14_J", "Turn_6_A"),
     # 1 line
-    ("1_AK", "M8"),
+
+    ("Turn_8_B", "1_AK"),
     ("M8", "H1"),
     ("H1", "Ч1"),
     ("Ч1", "H"),
@@ -87,7 +90,8 @@ segments = [
 
     # 2 line
     ("before_M6", "M6"),
-    ("M6", "Turn_14_J"),
+
+     
     ("Turn_14_J", "H2"),
     ("H2", "Ч2"),
     ("Ч2", "M5"),
@@ -151,6 +155,10 @@ split_parts_map = {
     "ALB_Turn4-6": {
         "partA": "ALB_Turn6",
         "partB": "ALB_Turn4"
+    },
+    "AK_Turn6-8": {
+        "partA": "AK_Turn6",
+        "partB": "Ak_Turn8",
     }
 }
 
@@ -173,63 +181,6 @@ default_switch_mode = {
 # Толщина прямых сегментов при положении стрелки: left = «+», right = «-»
 TRACK_WIDTH_MAIN = 6
 TRACK_WIDTH_THIN = 2
-
-# connected = рабочий путь (6 px), disconnected = отведённый (2 px)
-# Ключ — имя стрелки; для каждого left/right: segments + diag_state
-switch_branch_aspects = {
-    "Turn_16": {
-        "left": {
-            "segments": {
-                ("M10", "H3"): "connected",
-                ("M10", "H5"): "disconnected",
-            },
-            "diag_state": "disconnected",
-        },
-        "right": {
-            "segments": {
-                ("M10", "H3"): "disconnected",
-                ("M10", "H5"): "connected",
-            },
-            "diag_state": "connected",
-        },
-    },
-    "AK_Turn6-8": {
-        "left": {
-            "segments": {
-                ("Turn_8_B", "M8"): "connected",
-                ("Turn_6_A", "M6"): "disconnected",
-            },
-            "diag_state": "disconnected",
-        },
-         "right": {
-            "segments": {
-                ("Turn_8_B", "M8"): "disconnected",
-                ("Turn_6_A", "M6"): "connected",
-            },
-            "diag_state": "connected",
-        },
-    },
-    # Turn_17: один рабочий путь (Ч5 → стрелка → M7), нет второй ветки как у Turn_16
-    "Turn_17": {
-        "single_path": True,
-        "left": {
-            "segments": {
-                ("H5", "Ч5"): "connected",
-                ("Turn_17_J", "M7"): "connected",
-                ("Ч3", "M7"): "connected",
-            },
-            "diag_state": "connected",
-        },
-        "right": {
-            "segments": {
-                ("H5", "Ч5"): "connected",
-                ("Turn_17_J", "M7"): "connected",
-                ("Ч3", "M7"): "connected",
-            },
-            "diag_state": "disconnected",
-        },
-    },
-}
 
 switch_segment_width = {
     "Turn_14": {
@@ -771,7 +722,8 @@ routes = {
         {"type": "diag", "name": "Turn_14"},
     ],
     ("M6", "H2"): [
-        {"type": "segment", "id": ("M6", "Turn_14_J")},
+        {"type": "segment", "id": ("M6", "Turn_6_A")},
+        {"type": "segment", "id":  ("Turn_6_A", "Turn_14_J")},
         {"type": "segment", "id": ("Turn_14_J", "H2")},
     ],
     ("M6", "4"): [
@@ -848,7 +800,11 @@ routes = {
 
     ("M6", "M8"): [
         {"type": "diag", "name": "AK_Turn6-8"},
-        {"type": "segment", "id": ("")}
+        {"type": "segment", "id": ("1_AK", "Turn_8_B")},
+        {"type": "segment", "id": ("M6", "Turn_6_A")},
+        {"type": "segment", "id": ("Turn_6_A", "Turn_14_J")},
+        {"type": "segment", "id": ("Turn_8_B", "M8")},
+        {"type": "segment", "id": ("Turn_14_J", "H2")},
     ],
     ("Ч5", "M7"): [
         {"type": "diag", "name": "Turn_17"},
@@ -935,12 +891,11 @@ train_routes = {
     ],
 }
 route_switch_modes = {
-    ("M6", "H2"): {"Turn_14": "left"},   # «+»
+    ("M6", "H2"): {"Turn_14": "left", "AK_Turn6-8": "left"},   # «+»
     ("M6", "H4"): {"Turn_14": "right"},  # «-»
     ("M2", "H3"): {"ALB_Turn2": "right"},
     ("M2", "M10"): {"ALB_Turn2": "right"},
     ("H3", "M1"): {"ALB_Turn1": "right"},
-    ("H3","M10"):{},
     ("M10", "M1"): {"ALB_Turn1": "right"},
     ("M2", "H1"): {"ALB_Turn2": "left","ALB_Turn4-6":  "left"},
     ("M2", "M8"): {"ALB_Turn2": "left", "ALB_Turn4-6":  "left"},
@@ -952,7 +907,6 @@ route_switch_modes = {
     ("M1", "M8"): {"ALB_Turn1": "left"},
     ("M1", "H1"): {"ALB_Turn1": "left"},
     ("M2", "H2"): {"ALB_Turn4-6": "right", "ALB_Turn8":  "left", "ALB_Turn2": "left"},
-    ("H1", "M8"): {},
     ("Ч", "4"): {"ALB_Turn2": "left","ALB_Turn4-6": "right", "ALB_Turn8": "right"},
     ("Ч", "3"): {"ALB_Turn2": "right"},
     ("Ч", "2"): {"ALB_Turn2": "left", "ALB_Turn4-6": "right", "ALB_Turn8": "left"},
@@ -969,6 +923,7 @@ route_switch_modes = {
     ("M10", "H3"):{"Turn_16": "left"},
     ("Ч5", "M7"): {"Turn_17": "left"},
     ("M7", "Ч5"): {"Turn_17": "left"},
+    ("M6", "M8"): {"AK_Turn6-8": "right"},
 }
 
 #Arduino Configs

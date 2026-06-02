@@ -974,11 +974,11 @@ class OccupancyManager:
         self.route_manager = None
         self.signal_manager = None
         self.interface_manager = None
-        # self.segment_ids = segment_ids
-        # self.diag_ids = diag_ids
-        # self.segment_groups = segment_groups
-        # self.segment_to_block = segment_to_block
-        # self.diag_to_signal = diag_to_signal
+        self.segment_ids = segment_ids
+        self.diag_ids = diag_ids
+        self.segment_groups = segment_groups
+        self.segment_to_block = segment_to_block
+        self.diag_to_signal = diag_to_signal
 
     def set_dependencies(self, interface_manager, route_manager, signal_manager):
         self.interface_manager = interface_manager
@@ -986,6 +986,7 @@ class OccupancyManager:
         self.signal_manager = signal_manager
 
     def update_paint_segments(self):
+        seen_seg_ids = set()
         for (a, b), seg_id in segment_ids.items():
             seg = (a,b)
             if not route_manager.if_seg_in_counter_list(seg):
@@ -1011,7 +1012,26 @@ class OccupancyManager:
             self.interface_manager.paint_segment((a, b), interface_manager.line_color_main)
 
     def update_paint_diagonals(self):
+        split_part_names = set()
+        for mapping in split_parts_map.values():
+            split_part_names.add(mapping["partA"])
+            split_part_names.add(mapping["partB"])
+
+        for split_name in split_diag_ids:
+            if diag_occ_train.get(split_name, 1) == 0:
+                interface_manager.paint_diagonal(split_name, "red")
+                continue
+            if (
+                self.route_manager.if_diag_in_counter_list(split_name)
+                and route_manager.get_diag_counter(split_name) > 0
+            ):
+                interface_manager.paint_diagonal(split_name, "yellow")
+                continue
+            interface_manager.paint_diagonal(split_name, interface_manager.line_color_main)
+
         for diag_name, lines in diag_ids.items():
+            if diag_name in split_part_names:
+                continue
             if diag_occ_train.get(diag_name, 1) == 0:
                 interface_manager.paint_diagonal(diag_name, "red")
                 continue
@@ -1089,27 +1109,45 @@ class RouteManager:
     route_counter = 1
     graph = {}
     segments_active_counter = {
-        ("pastM1", "M1"): 0,
-        ("M8mid", "M8"): 0,
-        ("M8mid", "M1"): 0,
-        ("M8", "H1"): 0,
-        ("M2", "Ч"): 0,
-        ("past2", "H2"): 0,
-        ("H2", "M6H2"): 0,
-        ("M6", "M6H2"): 0,
-        ("M2", "M2H1_mid"): 0,
-        ("M2H1_mid", "M2H1_third"): 0,
-        ("H1", "M2H1_third"): 0,
+         ("before_M10", "M10"): 0,
         ("M10", "H3"): 0,
-        ("past4", "H4"): 0,
-        ("M6", "beforeM6"): 0,
-        ("M6", "H2"): 0,
-        ("M6", "Turn_14_J"): 0,
-        ("Turn_14_J", "H2"): 0,
-        ("M10", "H5"): 0,
-        ("H5", "Ч5"): 0,
+        ("M8", "H1"): 0,
+        ("H3", "Ч3"): 0,
         ("Ч3", "M7"): 0,
         ("Turn_17_J", "M7"): 0,
+        ("M7", "M9"): 0,
+        ("M9", "Mb_depo"): 0,
+
+        # 5 line
+        ("H5", "Ч5"): 0,
+
+        ("M6", "Turn_6_A"): 0,
+        ("Turn_8_B", "M8"): 0,
+        ("Turn_14_J", "Turn_6_A"): 0,
+        # 1 line
+
+        ("Turn_8_B", "1_AK"): 0,
+        ("M8", "H1"): 0,
+        ("H1", "Ч1"): 0,
+        ("Ч1", "H"): 0,
+        ("H", "1"): 0,
+        ("1", "3"): 0,
+
+        # 2 line
+        ("before_M6", "M6"): 0,
+
+        
+        ("Turn_14_J", "H2"): 0,
+        ("H2", "Ч2"): 0,
+        ("Ч2", "M5"): 0,
+        ("M5", "M3"): 0, 
+        ("M3", "6"): 0,
+        ("6", "4"): 0,
+
+        # 4 line
+        ("H4", "Ч4"): 0
+         
+         
     }
     diag_active_counter = {
         'ALB_Turn2': 0,
@@ -1120,6 +1158,7 @@ class RouteManager:
         "Turn_14": 0,
         'Turn_16': 0,
         "Turn_17":0,
+        'AK_Turn6-8': 0,
     }
 
     def __init__(self):
@@ -1776,8 +1815,7 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = ["before_M6", "before_M10", "1_AK", "Turn_14_J", 
-                       "Turn_6_A", "Turn_8_B", "Turn_17_J"]
+        bannedNames = []
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
@@ -1799,6 +1837,11 @@ class interface_manager:
 
     def paint_diagonal(self, name, color):
         if name in split_diag_ids:
+            for part_lines in split_diag_ids[name].values():
+                for line_id in part_lines:
+                    canvas.itemconfig(line_id, fill=color)
+            return
+        if name not in diag_ids:
             return
         for line_id in diag_ids[name]:
             canvas.itemconfig(line_id, fill=color)
@@ -1806,10 +1849,13 @@ class interface_manager:
 
     def paint_segment(self, key, color):
         seg_id = segment_ids.get(key)
+        
         if seg_id is None:
             seg_id = segment_ids.get((key[1], key[0]))
         if seg_id is None:
             return
+      
+
         canvas.itemconfig(seg_id, fill=color)
 
 
@@ -1948,10 +1994,15 @@ class interface_manager:
             self._set_segment_aspect(seg_key, aspect)
 
         diag_state = cfg.get("diag_state")
-        if diag_state is not None and name_diag in diag_ids:
+        if diag_state is not None:
             diag_w = self.aspect_to_track_width(diag_state)
-            for line_id in diag_ids[name_diag]:
-                canvas.itemconfig(line_id, width=diag_w)
+            if name_diag in split_diag_ids:
+                for part_lines in split_diag_ids[name_diag].values():
+                    for line_id in part_lines:
+                        canvas.itemconfig(line_id, width=diag_w)
+            elif name_diag in diag_ids:
+                for line_id in diag_ids[name_diag]:
+                    canvas.itemconfig(line_id, width=diag_w)
         return True
 
     def apply_diagonal_mode(self, nameDiag, mode):
@@ -2001,8 +2052,8 @@ class interface_manager:
                 if nameDiag == "ALB_Turn1":
                     canvas.itemconfig(segment_ids[("M8mid", "M8")], width=6)
 
-        if not self.apply_switch_branch_aspects(nameDiag, mode):
-            self.apply_switch_segment_widths(nameDiag, mode)
+        #if not self.apply_switch_branch_aspects(nameDiag, mode):
+           # self.apply_switch_segment_widths(nameDiag, mode)
 
     def on_switch_click(self, event):
         name = get_switch_name_from_event(event)
@@ -2232,9 +2283,9 @@ class interface_manager:
                 if key not in routes:
                     print("Маршрут не найден")
                     return
-
             for step in routes[key]:
                 if step["type"] == "segment":
+
                     interface_manager.paint_segment(step["id"], color)
 
                 elif step["type"] == "diag":
@@ -2467,7 +2518,7 @@ AddDiagonal(430, 80, 470, 135, 10, 10, "Turn_17")
 # AddDiagonal(260, 328, 350, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(965, 328, 890, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(560, 130, 470, 231.5, -57, -20, "ALB_Turn8")
-AddSplitDiagonalDasAuto(160, 250, 200, 190, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
+AddSplitDiagonalDasAuto(160, 238, 200, 205, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
 # AddSplitDiagonal(430, 228, 390, 280,350, 331.5, -30, -30, "ALB_Turn4-6", "ALB_Turn4", "ALB_Turn6")
 
 def get_switch_name_from_event(event):
@@ -2521,21 +2572,23 @@ def blink_diag(name, duration_ms=2000, interval_ms=200):
     blinking_diags.add(name)
     end_time = time.time() + duration_ms / 1000.0
 
+    def _paint_blink_diag(name, color):
+        if name in split_diag_ids:
+            interface_manager.paint_diagonal(name, color)
+        elif name in split_parts_map:
+            parts = split_parts_map[name]
+            interface_manager.paint_diagonal(parts["partA"], color)
+            interface_manager.paint_diagonal(parts["partB"], color)
+        else:
+            interface_manager.paint_diagonal(name, color)
+
     def _step(state=True):
         if time.time() >= end_time:
-            if name == "ALB_Turn4-6":
-                interface_manager.paint_diagonal("ALB_Turn4", interface_manager.line_color_main)
-                interface_manager.paint_diagonal("ALB_Turn6", interface_manager.line_color_main)
-            else:
-                interface_manager.paint_diagonal(name, interface_manager.line_color_main)
+            _paint_blink_diag(name, interface_manager.line_color_main)
             return
 
         color = "#75CEFF" if state else interface_manager.line_color_main
-        if name == "ALB_Turn4-6":
-            interface_manager.paint_diagonal("ALB_Turn4", color)
-            interface_manager.paint_diagonal("ALB_Turn6", color)
-        else:
-            interface_manager.paint_diagonal(name, color)
+        _paint_blink_diag(name, color)
         root.after(interval_ms, _step, not state)
     _step(True)
 
