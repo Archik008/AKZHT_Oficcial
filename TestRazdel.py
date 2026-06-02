@@ -1107,6 +1107,9 @@ class RouteManager:
         ("M6", "Turn_14_J"): 0,
         ("Turn_14_J", "H2"): 0,
         ("M10", "H5"): 0,
+        ("H5", "Ч5"): 0,
+        ("Ч3", "M7"): 0,
+        ("Turn_17_J", "M7"): 0,
     }
     diag_active_counter = {
         'ALB_Turn2': 0,
@@ -1522,7 +1525,12 @@ class RouteManager:
         rid = route_manager.get_route_counter()
         self.add_to_route_id(1)
         if self.get_currnet_mode() == "maneuver":
-            for step in routes.get((start, end)):
+            route_steps = routes.get((start, end))
+            if route_steps is None:
+                route_steps = routes.get((end, start))
+            if not route_steps:
+                return rid
+            for step in route_steps:
                 if step["type"] == "segment":
                     a, b = step["id"]
                     if self.if_seg_in_counter_list((a,b)):
@@ -1538,8 +1546,8 @@ class RouteManager:
             self.active_routes[rid] = {
                 "start": start,
                 "end": end,
-                "segments": routes.get((start, end)),
-                "signals": self.collect_maneuver_signals_for_route(routes.get((start, end)), (start,end), end)
+                "segments": route_steps,
+                "signals": self.collect_maneuver_signals_for_route(route_steps, (start, end), end)
 
             }
             for sig in self.active_routes[rid]["signals"]:
@@ -1799,6 +1807,8 @@ class interface_manager:
     def paint_segment(self, key, color):
         seg_id = segment_ids.get(key)
         if seg_id is None:
+            seg_id = segment_ids.get((key[1], key[0]))
+        if seg_id is None:
             return
         canvas.itemconfig(seg_id, fill=color)
 
@@ -1921,16 +1931,22 @@ class interface_manager:
 
     def apply_switch_branch_aspects(self, name_diag: str, mode: str) -> bool:
         """
-        Универсально: толщина сегментов и диагонали из switch_branch_aspects.
-        segments: {("A","B"): "connected"|"disconnected", ...}
-        diag_state: "connected" (6 px) | "disconnected" (2 px)
-        Возвращает True, если конфиг для стрелки найден.
+        Толщина сегментов и диагонали из switch_branch_aspects.
+        single_path (на уровне стрелки): один путь — прямые всегда толстые,
+        connected/disconnected только у диагонали (+/−).
         """
-        cfg = switch_branch_aspects.get(name_diag, {}).get(mode)
+        sw_cfg = switch_branch_aspects.get(name_diag)
+        if not sw_cfg:
+            return False
+        cfg = sw_cfg.get(mode)
         if not cfg:
             return False
+
+        single_path = sw_cfg.get("single_path", False)
         for seg_key, seg_state in cfg.get("segments", {}).items():
-            self._set_segment_aspect(seg_key, seg_state)
+            aspect = "connected" if single_path else seg_state
+            self._set_segment_aspect(seg_key, aspect)
+
         diag_state = cfg.get("diag_state")
         if diag_state is not None and name_diag in diag_ids:
             diag_w = self.aspect_to_track_width(diag_state)
