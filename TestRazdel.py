@@ -2022,9 +2022,6 @@ class interface_manager:
                 if nameDiag == "ALB_Turn1":
                     canvas.itemconfig(segment_ids[("M8mid", "M8")], width=6)
 
-        #if not self.apply_switch_branch_aspects(nameDiag, mode):
-           # self.apply_switch_segment_widths(nameDiag, mode)
-
     def on_switch_click(self, event):
         name = get_switch_name_from_event(event)
         menu = tk.Menu(root, tearoff=0)
@@ -2488,7 +2485,7 @@ AddDiagonal(420, 80, 470, 135, 10, 10, "Turn_17")
 # AddDiagonal(210, 328, 300, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(915, 328, 840, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(510, 130, 420, 231.5, -57, -20, "ALB_Turn8")
-AddSplitDiagonalDasAuto(110, 238, 150, 205, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
+AddSplitDiagonalDasAuto(110, 251.5, 150, 189, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
 # AddSplitDiagonal(380, 228, 340, 280, 300, 331.5, -30, -30, "ALB_Turn4-6", "ALB_Turn4", "ALB_Turn6")
 
 def get_switch_name_from_event(event):
