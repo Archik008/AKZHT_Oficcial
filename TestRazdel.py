@@ -1159,6 +1159,7 @@ class RouteManager:
         'Turn_16': 0,
         "Turn_17":0,
         'AK_Turn6-8': 0,
+        "Turn_19": 0,
     }
 
     def __init__(self):
@@ -2318,6 +2319,7 @@ diag_occ_train = {
     "Turn_16": 1,
     "Turn_14": 1,
     "Turn_17": 1,
+    "Turn_19": 1,
 }
 
 for block, segs in segment_groups.items():
@@ -2482,6 +2484,7 @@ if DRAW_TRACKS:
 AddDiagonal(140, 257, 170, 320, 20, 20, "Turn_14")
 AddDiagonal(240, 135, 290, 80, 10, 10, "Turn_16")
 AddDiagonal(440, 80, 490, 135, 10, 10, "Turn_17")
+AddDiagonal(380, 320, 440, 258, 30, 20, "Turn_19")
 # AddDiagonal(210, 328, 300, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(915, 328, 840, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(510, 130, 420, 231.5, -57, -20, "ALB_Turn8")

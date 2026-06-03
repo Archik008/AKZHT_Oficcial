@@ -164,7 +164,7 @@ split_parts_map = {
     }
 }
 
-switch_list = ["Turn_14", "Turn_16", "Turn_17",  "AK_Turn6-8"]
+switch_list = ["Turn_14", "Turn_16", "Turn_17",  "AK_Turn6-8", "Turn_19"]
 
 base_switch_diags = {
     "Turn_14": (180, 300, 140, 255)
@@ -178,6 +178,7 @@ default_switch_mode = {
     "Turn_14": "left",
     "AK_Turn6-8": "left",
     "Turn_17": "left",
+    "Turn_19": "left",
 }
 
 # Толщина прямых сегментов при положении стрелки: left = «+», right = «-»
@@ -262,6 +263,11 @@ diagonal_config = {
     },
     "Turn_17":{
         "left":  {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": 0, "disconnected":0},
+        "default": "both",
+    },
+    "Turn_19":{
+        "left":  {"exists": True, "connected": +5, "disconnected": -5},
         "right": {"exists": True, "connected": 0, "disconnected":0},
         "default": "both",
     }
@@ -813,6 +819,11 @@ routes = {
         {"type": "diag", "name": "Turn_17"},
         {"type": "segment", "id": ("Turn_17_J", "M7")},
     ],
+    ("H4", "M5"): [
+        {"type": "segment", "id": ("H4", "Ч4")},
+        {"type": "diag", "name": "Turn_19"},
+        {"type":"segment", "id": ("M5", "M3")},
+    ]
     # ("M7", "Ч5"): [
     #     {"type": "segment", "id": ("Turn_17_J", "M7")},
     #     {"type": "diag", "name": "Turn_17"},
@@ -927,6 +938,7 @@ route_switch_modes = {
     ("Ч5", "M7"): {"Turn_17": "right"},
     ("M7", "Ч5"): {"Turn_17": "left"},
     ("M6", "M8"): {"AK_Turn6-8": "right"},
+    ("H4", "M5"): {"Turn_19": "right"},
 }
 
 #Arduino Configs
