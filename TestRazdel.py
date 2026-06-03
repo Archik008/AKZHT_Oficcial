@@ -2479,13 +2479,13 @@ if DRAW_TRACKS:
         segment_ids[(b, a)] = seg
 
 
-AddDiagonal(140, 247.5, 170, 300, 20, 20, "Turn_14")
+AddDiagonal(140, 257, 170, 320, 20, 20, "Turn_14")
 AddDiagonal(220, 135, 270, 80, 10, 10, "Turn_16")
 AddDiagonal(420, 80, 470, 135, 10, 10, "Turn_17")
 # AddDiagonal(210, 328, 300, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(915, 328, 840, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(510, 130, 420, 231.5, -57, -20, "ALB_Turn8")
-AddSplitDiagonalDasAuto(110, 251.5, 150, 189, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
+AddSplitDiagonalDasAuto(110, 260, 150, 200, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
 # AddSplitDiagonal(380, 228, 340, 280, 300, 331.5, -30, -30, "ALB_Turn4-6", "ALB_Turn4", "ALB_Turn6")
 
 def get_switch_name_from_event(event):
