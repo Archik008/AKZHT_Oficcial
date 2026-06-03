@@ -1975,36 +1975,6 @@ class interface_manager:
             canvas.itemconfig(seg_id, width=seg_w)
         return seg_w
 
-    def apply_switch_branch_aspects(self, name_diag: str, mode: str) -> bool:
-        """
-        Толщина сегментов и диагонали из switch_branch_aspects.
-        single_path (на уровне стрелки): один путь — прямые всегда толстые,
-        connected/disconnected только у диагонали (+/−).
-        """
-        sw_cfg = switch_branch_aspects.get(name_diag)
-        if not sw_cfg:
-            return False
-        cfg = sw_cfg.get(mode)
-        if not cfg:
-            return False
-
-        single_path = sw_cfg.get("single_path", False)
-        for seg_key, seg_state in cfg.get("segments", {}).items():
-            aspect = "connected" if single_path else seg_state
-            self._set_segment_aspect(seg_key, aspect)
-
-        diag_state = cfg.get("diag_state")
-        if diag_state is not None:
-            diag_w = self.aspect_to_track_width(diag_state)
-            if name_diag in split_diag_ids:
-                for part_lines in split_diag_ids[name_diag].values():
-                    for line_id in part_lines:
-                        canvas.itemconfig(line_id, width=diag_w)
-            elif name_diag in diag_ids:
-                for line_id in diag_ids[name_diag]:
-                    canvas.itemconfig(line_id, width=diag_w)
-        return True
-
     def apply_diagonal_mode(self, nameDiag, mode):
         cfg = diagonal_config.get(nameDiag)
         if cfg is None:
