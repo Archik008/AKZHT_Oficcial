@@ -7,7 +7,7 @@ positions = {
     "H2": (200, 250),
     "1_AK": (50, 190),
     "M8": (180, 190),
-    "M10": (220, 140),
+    "M10": (160, 140),
     "before_M10": (100, 140),
     "H5": (290, 80),
     "H3": (290, 140),
@@ -256,8 +256,8 @@ diagonal_config = {
         "default": "both",
     },
     "AK_Turn6-8": {
-        "left":  {"exists": True, "connected": +3, "disconnected": -3},
-        "right": {"exists": True, "connected": +3, "disconnected": 0},
+        "left":  {"exists": True, "connected": -5, "disconnected": 0},
+        "right": {"exists": True, "connected": -5, "disconnected": 0},
         "default": "both",
     },
     "Turn_17":{
@@ -813,10 +813,10 @@ routes = {
         {"type": "diag", "name": "Turn_17"},
         {"type": "segment", "id": ("Turn_17_J", "M7")},
     ],
-    ("M7", "Ч5"): [
-        {"type": "segment", "id": ("Turn_17_J", "M7")},
-        {"type": "diag", "name": "Turn_17"},
-    ],
+    # ("M7", "Ч5"): [
+    #     {"type": "segment", "id": ("Turn_17_J", "M7")},
+    #     {"type": "diag", "name": "Turn_17"},
+    # ],
 }
 
 train_routes = {
