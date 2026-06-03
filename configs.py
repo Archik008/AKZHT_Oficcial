@@ -70,6 +70,8 @@ segments = [
     ("H3", "Ч3"),
     ("Ч3", "M7"),
     ("Turn_17_J", "M7"),
+    
+    ("Ч3", "Turn_17_J"),
     ("M7", "M9"),
     ("M9", "Mb_depo"),
 
@@ -260,7 +262,7 @@ diagonal_config = {
     },
     "Turn_17":{
         "left":  {"exists": True, "connected": 0, "disconnected": 0},
-        "right": {"exists": True, "connected": 0, "disconnected": 0},
+        "right": {"exists": True, "connected": +5, "disconnected":-5},
         "default": "both",
     }
 }
@@ -922,7 +924,7 @@ route_switch_modes = {
     ("H4", "Ч"): {"ALB_Turn4-6": "right", "ALB_Turn2": "left", "ALB_Turn8": "right"},
     ("M10", "H5"):{"Turn_16":"right"},
     ("M10", "H3"):{"Turn_16": "left"},
-    ("Ч5", "M7"): {"Turn_17": "left"},
+    ("Ч5", "M7"): {"Turn_17": "right"},
     ("M7", "Ч5"): {"Turn_17": "left"},
     ("M6", "M8"): {"AK_Turn6-8": "right"},
 }

@@ -1677,7 +1677,7 @@ class SwitchManager:
             self.interface_manager.showInfo("Ошибка", "Стрелка занята!")
             return
 
-        textALB4_6 = canvas.itemcget(switch_text_ids["ALB_Turn4-6"], "text")
+    
         ALB_Turn1banned = [("M8mid", "M8"), ("M8", "M8_mid")]
         ALB_Turn8banned = [("M6", "M6H2"), ("H2", "M6H2"), ("M6H2", "M6"), ("M6H2", "H2")]
         ALB_Turn4_6banned = [("M2", "M2H1_mid"), ("M2H1_mid", "M2"), ("M6", "M6H2"), ("M6H2", "M6"), ("H2", "M6H2"),
@@ -1986,7 +1986,7 @@ class interface_manager:
             if mode in ("left", "both"):
                 self.setBranchLeft(nameDiag, left_cfg["connected"])
                 self.branchWidth(nameDiag, 6)
-                if nameDiag == "ALB_Turn8":
+                if nameDiag == "ALB_Turn8  ":
                     canvas.itemconfig(segment_ids[("M6H2", "H2")], width=6)
             else:
                 self.setBranchLeft(nameDiag, left_cfg["disconnected"])
