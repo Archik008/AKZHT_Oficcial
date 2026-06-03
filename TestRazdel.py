@@ -1719,7 +1719,7 @@ class SwitchManager:
 
         def finalize():
             if mode == 0 and text != "+":
-                if name == "ALB_Turn2" and textALB4_6 == "+":
+                if name == "ALB_Turn2":
                     canvas.itemconfig(segment_ids[("H1", "M2H1_third")], width=6)
                 self.set_diagonal_mode(name, "left")
                 self.changingSwitches = False
@@ -2480,8 +2480,8 @@ if DRAW_TRACKS:
 
 
 AddDiagonal(140, 257, 170, 320, 20, 20, "Turn_14")
-AddDiagonal(220, 135, 270, 80, 10, 10, "Turn_16")
-AddDiagonal(420, 80, 470, 135, 10, 10, "Turn_17")
+AddDiagonal(240, 135, 290, 80, 10, 10, "Turn_16")
+AddDiagonal(440, 80, 490, 135, 10, 10, "Turn_17")
 # AddDiagonal(210, 328, 300, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(915, 328, 840, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(510, 130, 420, 231.5, -57, -20, "ALB_Turn8")
