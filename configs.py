@@ -262,7 +262,7 @@ diagonal_config = {
     },
     "Turn_17":{
         "left":  {"exists": True, "connected": 0, "disconnected": 0},
-        "right": {"exists": True, "connected": +5, "disconnected":-5},
+        "right": {"exists": True, "connected": 0, "disconnected":0},
         "default": "both",
     }
 }
