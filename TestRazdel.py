@@ -1766,10 +1766,10 @@ class interface_manager:
         self.signal_manager = None
         # self.drawDeadEnd("before_M10", "right", 0)
         # self.drawDeadEnd("before_M6", "right", 0)
-        self.drawDeadEnd("Mb_depo", "right", 0)
-        self.drawDeadEnd("before_M6", "right", 0)
-        self.drawDeadEnd("1_AK", "right", 0)
-        self.drawDeadEnd("before_M10", "right", 0)
+        # self.drawDeadEnd("Mb_depo", "right", 0)
+        # self.drawDeadEnd("before_M6", "right", 0)
+        # self.drawDeadEnd("1_AK", "right", 0)
+        # self.drawDeadEnd("before_M10", "right", 0)
         # self.drawDeadEnd("past2", "right", 0)
         # self.drawDeadEnd("past4", "right", 0)
         # self.drawDeadEnd("beforeM6", "left", 0)
@@ -1816,7 +1816,10 @@ class interface_manager:
         self.btn_maneuver.place(x=center_x + offset - 100, y=buttons_y)
         self.btn_train.place(x=center_x - offset - 170, y=buttons_y)
 
-        bannedNames = []
+        bannedNames = [
+            "1_AK", "before_M6", "before_M10", "Turn_6_A", "Turn_8_B", "Turn_14_J", 
+            "Turn_17_J", "Mb_depo"
+        ]
 
         for name, (x, y) in positions.items():
             if name in bannedNames:
@@ -2482,13 +2485,14 @@ if DRAW_TRACKS:
 
 
 AddDiagonal(140, 257, 170, 320, 20, 20, "Turn_14")
-AddDiagonal(240, 135, 290, 80, 10, 10, "Turn_16")
-AddDiagonal(440, 80, 490, 135, 10, 10, "Turn_17")
+AddDiagonal(260, 135, 310, 80, 10, 10, "Turn_16")
+AddDiagonal(460, 80, 510, 135, 10, 10, "Turn_17")
 AddDiagonal(380, 320, 440, 258, 30, 20, "Turn_19")
 # AddDiagonal(210, 328, 300, 430, 20, 38, "ALB_Turn2")
 # AddDiagonal(915, 328, 840, 430, -22, -37, "ALB_Turn1")
 # AddDiagonal(510, 130, 420, 231.5, -57, -20, "ALB_Turn8")
 AddSplitDiagonalDasAuto(110, 260, 150, 200, 20, 20, "AK_Turn6-8", "AK_Turn6", "Ak_Turn8")
+AddSplitDiagonalDasAuto(190, 195, 235, 145, 10, 10, "AK_Turn16-12", "Ak_Turn16", "Ak_Turn12")
 # AddSplitDiagonal(380, 228, 340, 280, 300, 331.5, -30, -30, "ALB_Turn4-6", "ALB_Turn4", "ALB_Turn6")
 
 def get_switch_name_from_event(event):
